@@ -1,4 +1,4 @@
-# dio
+# Dio
 
 ## Project setup
 ```
