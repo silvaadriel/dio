@@ -4687,6 +4687,11 @@ jest-worker@^24.9.0:
     merge-stream "^2.0.0"
     supports-color "^6.1.0"
 
+jquery-csv@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/jquery-csv/-/jquery-csv-1.0.5.tgz#35c5b7d0d6afec2b8f812a7001150f58f1544075"
+  integrity sha512-OPn6Laqng6n23WBTZdQM9EmHgqg3q97ViOa5Eav5pScx9L5v2O6ODzjQzD9pleetWSuI8mSLTtyytNgeMFm3bA==
+
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
