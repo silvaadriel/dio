@@ -1,8 +1,9 @@
 <template>
   <div>
-    <p class="font-weight-medium">
-      Dio aims to process .csv files and display its data in a friendly manner.
-      <br>Project created for academic purposes.
+    <p class="blue--text text--darken-2 font-weight-regular body-1">
+      Dio aims to process <strong>.csv</strong>
+      files and display its data in a <strong>friendly manner.</strong>
+      <br><i>Project created for academic purposes.</i>
     </p>
   </div>
 </template>

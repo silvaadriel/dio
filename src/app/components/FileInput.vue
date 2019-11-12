@@ -1,13 +1,14 @@
 <template>
   <div>
     <form novalidate>
-      <div class="dropbox">
+      <div class="dropbox" :class="disabled ? 'dropbox--disabled' : ''">
         <input type="file"
           :name="name"
           :accept="accept"
           @change="changeEvent"
           :disabled="disabled"
           class="dropbox__input-file"
+          :class="disabled ? 'dropbox__input-file--disabled' : ''"
         />
         <div class="dropbox__placeholder">
           <slot name="placeholder"/>
@@ -44,26 +45,33 @@ export default {
 
 <style lang="scss" scoped>
   .dropbox {
-    outline: 2px dashed grey;
-    outline-offset: -10px;
-    background: lightcyan;
-    color: dimgray;
+    border: 2px dashed #1976D2;
+    border-radius: 5px;
+    background: #fff;
+    color: #646C7F;
     padding: 10px;
     min-height: 200px;
     position: relative;
     cursor: pointer;
-    transition: ease .3s;
+    transition: ease .5s;
     &__placeholder {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 50px 0;
+      height: -webkit-fill-available;
+      padding: 0 50px;
       font-size: 1.2em;
       text-align: center;
     }
     &:hover {
-      background: lightblue;
+      background: #E3F2FD;
+    }
+    &--disabled {
+      cursor: not-allowed;
+    }
+    &--disabled:hover {
+      background: #fff;
     }
     &__input-file {
       opacity: 0;
@@ -73,6 +81,9 @@ export default {
       top: 0;
       right: 0;
       cursor: pointer;
+    }
+    &__input-file--disabled {
+      cursor: not-allowed;
     }
   }
 </style>
