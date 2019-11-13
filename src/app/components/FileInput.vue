@@ -2,7 +2,18 @@
   <div>
     <form novalidate>
       <div class="dropbox" :class="disabled ? 'dropbox--disabled' : ''">
+        <v-scroll-x-reverse-transition>
+          <v-btn
+            @click="clickClearEvent"
+            class="dropbox__clear"
+            text icon color="blue darken-2"
+            v-if="disabled"
+          >
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-scroll-x-reverse-transition>
         <input type="file"
+          ref="input"
           :name="name"
           :accept="accept"
           @change="changeEvent"
@@ -39,6 +50,10 @@ export default {
     changeEvent(event) {
       this.$emit('change', event);
     },
+    clickClearEvent(event) {
+      this.$refs.input.value = '';
+      this.$emit('clickClear', event);
+    },
   },
 };
 </script>
@@ -72,6 +87,12 @@ export default {
     }
     &--disabled:hover {
       background: #fff;
+    }
+    &__clear {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 10;
     }
     &__input-file {
       opacity: 0;

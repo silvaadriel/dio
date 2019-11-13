@@ -10,22 +10,48 @@
         name="csv"
         accept=".csv"
         @change="handleFileInput"
+        @clickClear="handleAbort"
         :disabled="isLoading"
       >
         <template slot="placeholder">
           <v-fade-transition leave-absolute>
-            <p v-if="!isLoading">
+            <p class="ma-0" v-if="!isLoading">
               Drag your .csv file here to begin<br> or click to browse
             </p>
             <v-progress-circular
+              v-else
               :value="progress"
-              v-if="isLoading"
               :indeterminate="isIndeterminate"
               :size="50"
               :width="5"
               color="primary"
             ><span class="caption">{{ progress }}%</span></v-progress-circular>
           </v-fade-transition>
+          <v-radio-group class="file-input__radio-group" v-model="separator" row>
+            <v-radio
+              value=","
+              default
+            >
+              <template v-slot:label>
+                <div>
+                  <strong class="blue--text text--darken-2 font-weight-black">
+                    ,
+                  </strong>
+                </div>
+              </template>
+            </v-radio>
+            <v-radio
+              value=";"
+            >
+              <template v-slot:label>
+                <div>
+                  <strong class="blue--text text--darken-2 font-weight-black">
+                    ;
+                  </strong>
+                </div>
+              </template>
+            </v-radio>
+          </v-radio-group>
         </template>
       </file-input>
     </v-layout>
@@ -47,6 +73,7 @@
 </template>
 
 <script>
+import * as csv from 'jquery-csv';
 import TheDioLogo from '../components/TheDioLogo.vue';
 import TheAppDescription from '../components/TheAppDescription.vue';
 import FileInput from '../components/FileInput.vue';
@@ -58,21 +85,32 @@ export default {
     TheAppDescription,
     FileInput,
   },
+  inject: ['getCsv', 'setCsv'],
   data: () => ({
+    fileReader: null,
+    separator: ',',
     snackbar: false,
     snackbarMessage: '',
     progress: 0,
     isLoading: false,
     isIndeterminate: false,
   }),
+  created() {
+    this.fileReader = this.setFileReader();
+  },
   methods: {
     handleFileInput(event) {
       const file = this.getFile(event);
-      const reader = this.setFileReader();
-      this.readFileData(file, reader);
+      this.readFileData(file);
     },
     getFile(event) {
       return event.target.files[0];
+    },
+    handleAbort() {
+      this.fileReader.abort();
+      this.progress = 0;
+      this.isLoading = false;
+      this.isIndeterminate = false;
     },
     handleOnLoadStart() {
       this.isLoading = true;
@@ -82,7 +120,10 @@ export default {
       this.isIndeterminate = true;
     },
     handleOnLoad(event) {
-      console.log(event.target.result);
+      this.setCsv(csv.toObjects(event.target.result, {
+        separator: this.separator,
+      }));
+      setTimeout(() => this.$router.push('/dashboard'), 1000);
     },
     errorHandler(event) {
       switch (event.target.error.code) {
@@ -112,23 +153,23 @@ export default {
       }
     },
     handleOnAbort() {
-      this.snackbarMessage = 'Aborted file reading process';
+      this.snackbarMessage = 'File read cancelled';
       this.snackbar = true;
     },
     setFileReader() {
-      const reader = new FileReader();
+      const fileReader = new FileReader();
 
-      reader.onloadstart = this.handleOnLoadStart;
-      reader.onloadend = this.handleOnLoadEnd;
-      reader.onload = this.handleOnLoad;
-      reader.onerror = this.errorHandler;
-      reader.onprogress = this.updateProgress;
-      reader.onabort = this.handleOnAbort;
+      fileReader.onloadstart = this.handleOnLoadStart;
+      fileReader.onloadend = this.handleOnLoadEnd;
+      fileReader.onload = this.handleOnLoad;
+      fileReader.onerror = this.errorHandler;
+      fileReader.onprogress = this.updateProgress;
+      fileReader.onabort = this.handleOnAbort;
 
-      return reader;
+      return fileReader;
     },
-    readFileData(file, reader) {
-      reader.readAsText(file, 'utf-8');
+    readFileData(file) {
+      this.fileReader.readAsText(file, 'utf-8');
     },
   },
 };
@@ -138,5 +179,10 @@ export default {
   .file-input {
     width: 100%;
     max-width: 520px;
+    &__radio-group {
+      position: absolute;
+      bottom: -15px;
+      left: 10px;
+    }
   }
 </style>
