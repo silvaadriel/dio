@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-img class="mt-4" alt="Dio logo" src="../assets/logo.svg"></v-img>
+    <v-img class="mt-4" alt="Dio logo" src="../assets/dio-logo.svg"></v-img>
   </div>
 </template>
 
