@@ -14,9 +14,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.logo {
-  height: 100%;
-}
-</style>

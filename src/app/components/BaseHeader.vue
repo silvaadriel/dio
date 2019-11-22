@@ -14,6 +14,6 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  height: 100px;
+  max-height: 120px;
 }
 </style>

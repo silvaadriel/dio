@@ -74,6 +74,7 @@
 
 <script>
 import * as csv from 'jquery-csv';
+import DataModel from '../models/DataModel';
 import TheDioLogo from '../components/TheDioLogo.vue';
 import TheAppDescription from '../components/TheAppDescription.vue';
 import FileInput from '../components/FileInput.vue';
@@ -120,10 +121,17 @@ export default {
       this.isIndeterminate = true;
     },
     handleOnLoad(event) {
-      this.setCsv(csv.toObjects(event.target.result, {
+      const data = new DataModel();
+      data.fill(this.parse(csv.toObjects(event.target.result, {
         separator: this.separator,
-      }));
+      })));
+      this.setCsv(data);
       setTimeout(() => this.$router.push('/dashboard'), 1000);
+    },
+    parse(data) {
+      const headers = Object.keys(data[0]).map(key => ({ text: key, value: key }));
+
+      return { headers, desserts: data };
     },
     errorHandler(event) {
       switch (event.target.error.code) {
