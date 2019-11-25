@@ -8,6 +8,7 @@
           </router-link>
         </template>
       </base-header>
+      <base-chart class="mb-4"/>
       <data-table :data="csv"/>
     </v-layout>
   </v-container>
@@ -17,6 +18,7 @@
 import BaseHeader from '../components/BaseHeader.vue';
 import TheDioLogo from '../components/TheDioLogo.vue';
 import DataTable from '../components/DataTable.vue';
+import BaseChart from '../components/BaseChart.vue';
 
 export default {
   name: 'Dashboard',
@@ -30,6 +32,7 @@ export default {
     BaseHeader,
     TheDioLogo,
     DataTable,
+    BaseChart,
   },
 };
 </script>
