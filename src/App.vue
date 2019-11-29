@@ -20,7 +20,7 @@ export default {
     BaseAbout,
   },
   data: () => ({
-    csv: [],
+    csv: {},
   }),
   provide() {
     return {

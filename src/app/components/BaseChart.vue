@@ -1,15 +1,17 @@
 <template>
   <v-card
     width="100%"
+    class="py-4"
     color="blue darken-2"
   >
     <v-sparkline
       :labels="labels"
       :value="value"
       color="white"
-      auto-draw
-      line-width="2"
+      type="bar"
+      auto-line-width
       padding="16"
+      class="foo"
     ></v-sparkline>
   </v-card>
 </template>
@@ -41,3 +43,11 @@ export default {
   }),
 };
 </script>
+
+<style lang="scss" scoped>
+.foo.theme--light.v-sparkline {
+  g {
+    fill: #fff;
+  }
+}
+</style>

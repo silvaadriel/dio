@@ -89,6 +89,7 @@ export default {
   inject: ['getCsv', 'setCsv'],
   data: () => ({
     fileReader: null,
+    fileName: '',
     separator: ',',
     snackbar: false,
     snackbarMessage: '',
@@ -102,7 +103,15 @@ export default {
   methods: {
     handleFileInput(event) {
       const file = this.getFile(event);
+      this.fileName = this.clearFileName(file.name);
       this.readFileData(file);
+    },
+    clearFileName(fileName) {
+      return fileName
+        .replace(/(\.csv)/gi, '')
+        .replace(/([^a-zA-Z0-9]+)/gi, ' ')
+        .replace(/[a-zA-Z](?=[A-Z0-9])/g, '$& ')
+        .toUpperCase();
     },
     getFile(event) {
       return event.target.files[0];
@@ -126,7 +135,13 @@ export default {
         separator: this.separator,
       })));
       this.setCsv(data);
-      setTimeout(() => this.$router.push('/dashboard'), 1000);
+      setTimeout(
+        () => this.$router.push({
+          path: '/dashboard',
+          query: { fn: this.fileName },
+        }),
+        1000,
+      );
     },
     parse(data) {
       const headers = Object.keys(data[0]).map(key => ({ text: key, value: key }));
