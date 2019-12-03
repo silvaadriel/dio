@@ -1,32 +1,40 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app style="background: #E8E9EC">
+    <v-scroll-x-transition>
+      <router-view/>
+    </v-scroll-x-transition>
+    <base-about
+      :about="{ projectName: 'Dio',
+                developerName: 'Adriel da Silva',
+                socialMediaUrl: 'https://github.com/silvaadriel/' }"
+    />
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import BaseAbout from './app/components/BaseAbout.vue';
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+export default {
+  name: 'App',
+  components: {
+    BaseAbout,
+  },
+  data: () => ({
+    csv: {},
+  }),
+  provide() {
+    return {
+      getCsv: this.getCsv,
+      setCsv: this.setCsv,
+    };
+  },
+  methods: {
+    getCsv() {
+      return this.csv;
+    },
+    setCsv(csv) {
+      this.csv = csv;
+    },
+  },
+};
+</script>
